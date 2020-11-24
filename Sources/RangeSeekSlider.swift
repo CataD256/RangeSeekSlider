@@ -554,7 +554,7 @@ import UIKit
         accessibleElements = [leftHandleAccessibilityElement, rightHandleAccessibilityElement]
     }
 
-    private func updateHandlePositions() {
+    open func updateHandlePositions() {
         leftHandle.position = CGPoint(x: xPositionAlongLine(for: selectedMinValue),
                                       y: sliderLine.frame.midY)
 
