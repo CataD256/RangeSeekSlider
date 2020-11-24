@@ -41,6 +41,9 @@ final class ViewController: UIViewController {
         rangeSliderCurrency.numberFormatter.maximumFractionDigits = 2
         rangeSliderCurrency.minLabelFont = UIFont(name: "ChalkboardSE-Regular", size: 15.0)!
         rangeSliderCurrency.maxLabelFont = UIFont(name: "ChalkboardSE-Regular", size: 15.0)!
+        rangeSliderCurrency.leftHandleShadow = ShadowConfiguration(radius: 1, opacity: 0.4, offset: CGSize(width: 0, height: 1), color: .black)
+        rangeSliderCurrency.leftHandleSelectedShadow = ShadowConfiguration(radius: 4, opacity: 0.4, offset: .zero, color: .black)
+
 
         // custom number formatter range slider
         rangeSliderCustom.delegate = self
@@ -54,6 +57,9 @@ final class ViewController: UIViewController {
         rangeSliderCustom.lineHeight = 10.0
         rangeSliderCustom.numberFormatter.positivePrefix = "$"
         rangeSliderCustom.numberFormatter.positiveSuffix = "M"
+        rangeSliderCustom.leftHandleShadow = ShadowConfiguration(radius: 4, opacity: 0.3, offset: .zero, color: .black)
+        rangeSliderCustom.leftHandleSelectedShadow = ShadowConfiguration(radius: 3, opacity: 0.3, offset: .zero, color: .black)
+        
     }
 }
 

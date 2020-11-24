@@ -220,6 +220,23 @@ import UIKit
 
     /// The brief description displayed in accessibility mode for maximum value handler. If not set, the default is empty String.
     @IBInspectable open var maxLabelAccessibilityHint: String?
+    
+    
+    /// Display a shadow under the left handle. If not set, no shadow will be shown
+    open var leftHandleShadow: ShadowConfiguration? {
+        didSet {
+            leftHandle.setShadow(leftHandleShadow)
+        }
+    }
+    open var leftHandleSelectedShadow: ShadowConfiguration?
+    
+    /// Display a shadow under the right handle. If not set, no shadow will be shown
+    open var rightHandleShadow: ShadowConfiguration?  {
+        didSet {
+            rightHandle.setShadow(rightHandleShadow)
+        }
+    }
+    open var rightHandleSelectedShadow: ShadowConfiguration?
 
 
     // MARK: - private stored properties
@@ -399,11 +416,13 @@ import UIKit
         // draw the minimum slider handle
         leftHandle.cornerRadius = handleDiameter / 2.0
         leftHandle.borderWidth = handleBorderWidth
+        leftHandle.setShadow(leftHandleShadow)
         layer.addSublayer(leftHandle)
 
         // draw the maximum slider handle
         rightHandle.cornerRadius = handleDiameter / 2.0
         rightHandle.borderWidth = handleBorderWidth
+        rightHandle.setShadow(rightHandleShadow)
         layer.addSublayer(rightHandle)
 
         let handleFrame: CGRect = CGRect(x: 0.0, y: 0.0, width: handleDiameter, height: handleDiameter)
@@ -693,6 +712,13 @@ import UIKit
         CATransaction.setAnimationDuration(0.3)
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut))
         handle.transform = transform
+        let shadowConfiguration: ShadowConfiguration?
+        if handle == leftHandle {
+            shadowConfiguration = selected ? leftHandleSelectedShadow : leftHandleShadow
+        } else {
+            shadowConfiguration = selected ? rightHandleSelectedShadow : rightHandleShadow
+        }
+        handle.setShadow(shadowConfiguration)
 
         // the label above the handle will need to move too if the handle changes size
         updateLabelPositions()
@@ -758,5 +784,28 @@ private extension CGPoint {
         let distX: CGFloat = to.x - x
         let distY: CGFloat = to.y - y
         return sqrt(distX * distX + distY * distY)
+    }
+}
+
+public struct ShadowConfiguration {
+    public var radius: CGFloat
+    public var opacity: Float
+    public var offset: CGSize
+    public var color: UIColor
+    
+    public init(radius: CGFloat, opacity: Float, offset: CGSize, color: UIColor) {
+        self.radius = radius
+        self.opacity = opacity
+        self.offset = offset
+        self.color = color
+    }
+}
+
+private extension CALayer {
+    func setShadow(_ configuration:ShadowConfiguration?) {
+        self.shadowOpacity = configuration?.opacity ?? 0
+        self.shadowRadius = configuration?.radius ?? 0
+        self.shadowOffset = configuration?.offset ?? CGSize.zero
+        self.shadowColor = configuration?.color.cgColor
     }
 }
